@@ -4,6 +4,7 @@ import { DebatePhase } from '@/app/debatePhase'
 import { Badge } from '@/components/ui/badge'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { useAudio } from '@/contexts/audioPlayerContext'
+import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { P, match } from '@gabriel/ts-pattern'
 import { ClockIcon, PauseIcon, PlayIcon, SquareIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -50,6 +51,8 @@ const getIconForButton = ({
 }
 
 export default function Home() {
+  const wakeLock = usePersistentWakeLock()
+
   const { playAudio, activateAudio } = useAudio({
     bell: '/bell.mp3',
     friendlyReminder: '/friendly-reminder.mp3',
@@ -140,6 +143,7 @@ export default function Home() {
         />
       </div>
       <div className="grid place-items-end">
+        <p>Wake lock state: {JSON.stringify(wakeLock, null, 2)}</p>
         <Link href="/licences">Licenses</Link>
       </div>
     </main>

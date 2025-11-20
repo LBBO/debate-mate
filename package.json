@@ -18,6 +18,7 @@
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-screen-wake-lock": "^3.1.1",
     "react-timer-hook": "^4.0.5",
     "tailwind-merge": "^3.4.0"
   },
