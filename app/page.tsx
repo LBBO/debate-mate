@@ -3,10 +3,11 @@ import { DebatePhaseBadge } from '@/app/DebatePhaseBadge'
 import { DebatePhase } from '@/app/debatePhase'
 import { Badge } from '@/components/ui/badge'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
+import { useAudio } from '@/contexts/audioPlayerContext'
 import { P, match } from '@gabriel/ts-pattern'
 import { ClockIcon, PauseIcon, PlayIcon, SquareIcon } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
 
 const computePhase = (passedSeconds: number): DebatePhase => {
@@ -49,6 +50,13 @@ const getIconForButton = ({
 }
 
 export default function Home() {
+  const { playAudio, activateAudio } = useAudio({
+    bell: '/bell.mp3',
+    friendlyReminder: '/friendly-reminder.mp3',
+    regularTimeOver: '/regular-time-over.mp3',
+    completelyOver: '/completely-over.mp3',
+  })
+
   const [isSoftPaused, setIsSoftPaused] = useState(false)
   const {
     pause: pauseTimer,
@@ -62,28 +70,23 @@ export default function Home() {
   const currentPhase =
     isRunning || totalSeconds > 0 ? computePhase(totalSeconds) : undefined
 
-  const bellAudioRef = useRef<HTMLAudioElement | null>(null)
-  const friendlyReminderAudioRef = useRef<HTMLAudioElement | null>(null)
-  const regularTimeOverAudioRef = useRef<HTMLAudioElement | null>(null)
-  const completelyOverAudioRef = useRef<HTMLAudioElement | null>(null)
-
   useEffect(() => {
     match(currentPhase)
       .with(P.union('unprotected', 'protected-end'), () => {
-        bellAudioRef.current?.pause()
-        bellAudioRef.current?.fastSeek(0)
-        bellAudioRef.current?.play()
+        if (!isSoftPaused) {
+          playAudio('bell')
+        }
       })
       .with('grace-period', () => {
         if (isSoftPaused) {
-          friendlyReminderAudioRef.current?.play()
+          playAudio('friendlyReminder')
         } else {
-          regularTimeOverAudioRef.current?.play()
+          playAudio('regularTimeOver')
         }
       })
       .with('ended', () => {
         if (!isSoftPaused) {
-          completelyOverAudioRef.current?.play()
+          playAudio('completelyOver')
         }
       })
       .otherwise(() => {})
@@ -124,6 +127,7 @@ export default function Home() {
           color={[250, 250, 250]}
           className="bg-slate-900"
           onClick={() => {
+            activateAudio()
             if (!isRunning) {
               resetTimer(undefined, true)
               setIsSoftPaused(false)
@@ -134,12 +138,6 @@ export default function Home() {
             }
           }}
         />
-        <div className="hidden">
-          <audio ref={bellAudioRef} src="/bell.mp3" />
-          <audio ref={friendlyReminderAudioRef} src="/friendly-reminder.mp3" />
-          <audio ref={regularTimeOverAudioRef} src="/regular-time-over.mp3" />
-          <audio ref={completelyOverAudioRef} src="/completely-over.mp3" />
-        </div>
       </div>
       <div className="grid place-items-end">
         <Link href="/licences">Licenses</Link>
