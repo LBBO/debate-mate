@@ -1,6 +1,6 @@
 export default function LicencesPage() {
   return (
-    <div>
+    <main className="prose p-8">
       <h1>Licences</h1>
       <h2>Sounds</h2>
       <ul>
@@ -41,6 +41,6 @@ export default function LicencesPage() {
           </a>
         </li>
       </ul>
-    </div>
+    </main>
   )
 }

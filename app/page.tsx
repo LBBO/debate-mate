@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { P, match } from '@gabriel/ts-pattern'
 import { ClockIcon, PauseIcon, PlayIcon, SquareIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
 
@@ -89,7 +90,7 @@ export default function Home() {
   }, [currentPhase])
 
   return (
-    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr,auto,1fr] justify-items-center gap-8 p-8">
+    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr,auto,1fr] gap-8 p-8">
       <div className=""></div>
       <div className="grid place-content-center justify-items-center gap-8">
         {isSoftPaused ? (
@@ -140,7 +141,9 @@ export default function Home() {
           <audio ref={completelyOverAudioRef} src="/completely-over.mp3" />
         </div>
       </div>
-      <div className=""></div>
+      <div className="grid place-items-end">
+        <Link href="/licences">Licenses</Link>
+      </div>
     </main>
   )
 }
