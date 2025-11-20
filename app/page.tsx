@@ -3,8 +3,9 @@ import { DebatePhaseBadge } from '@/app/DebatePhaseBadge'
 import { DebatePhase } from '@/app/debatePhase'
 import { Badge } from '@/components/ui/badge'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
+import { P, match } from '@gabriel/ts-pattern'
 import { ClockIcon, PauseIcon, PlayIcon, SquareIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
 
 const computePhase = (passedSeconds: number): DebatePhase => {
@@ -49,7 +50,6 @@ const getIconForButton = ({
 export default function Home() {
   const [isSoftPaused, setIsSoftPaused] = useState(false)
   const {
-    start: startTimer,
     pause: pauseTimer,
     reset: resetTimer,
     seconds,
@@ -61,8 +61,31 @@ export default function Home() {
   const currentPhase =
     isRunning || totalSeconds > 0 ? computePhase(totalSeconds) : undefined
 
+  const bellAudioRef = useRef<HTMLAudioElement | null>(null)
+  const friendlyReminderAudioRef = useRef<HTMLAudioElement | null>(null)
+  const regularTimeOverAudioRef = useRef<HTMLAudioElement | null>(null)
+  const completelyOverAudioRef = useRef<HTMLAudioElement | null>(null)
+
   useEffect(() => {
-    // TODO play sounds
+    match(currentPhase)
+      .with(P.union('unprotected', 'protected-end'), () => {
+        bellAudioRef.current?.pause()
+        bellAudioRef.current?.fastSeek(0)
+        bellAudioRef.current?.play()
+      })
+      .with('grace-period', () => {
+        if (isSoftPaused) {
+          friendlyReminderAudioRef.current?.play()
+        } else {
+          regularTimeOverAudioRef.current?.play()
+        }
+      })
+      .with('ended', () => {
+        if (!isSoftPaused) {
+          completelyOverAudioRef.current?.play()
+        }
+      })
+      .otherwise(() => {})
   }, [currentPhase])
 
   return (
@@ -110,6 +133,12 @@ export default function Home() {
             }
           }}
         />
+        <div className="hidden">
+          <audio ref={bellAudioRef} src="/bell.mp3" />
+          <audio ref={friendlyReminderAudioRef} src="/friendly-reminder.mp3" />
+          <audio ref={regularTimeOverAudioRef} src="/regular-time-over.mp3" />
+          <audio ref={completelyOverAudioRef} src="/completely-over.mp3" />
+        </div>
       </div>
       <div className=""></div>
     </main>
