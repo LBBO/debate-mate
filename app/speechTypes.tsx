@@ -15,9 +15,9 @@ export type SpeechType = {
 }
 
 export const speechTypes = {
-  bp: {
+  normal: {
     name: 'British Parliamentary',
-    shortName: 'BP (7)',
+    shortName: 'Normal (7 min)',
     timeLimits: {
       totalRegularTime: 7 * secondsPerMinute,
       protectedStart: 1 * secondsPerMinute,
@@ -25,9 +25,9 @@ export const speechTypes = {
       gracePeriod: 15,
     },
   },
-  opd: {
+  half: {
     name: 'Open Parliamentary Debate',
-    shortName: 'Free (3.5)',
+    shortName: 'Half (3.5 min)',
     timeLimits: {
       totalRegularTime: 3.5 * secondsPerMinute,
       protectedStart: 0.5 * secondsPerMinute,

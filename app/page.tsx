@@ -94,7 +94,7 @@ export default function Home() {
     isRunning,
   } = useStopwatch({ autoStart: false })
 
-  const [speechTypeKey, setSpeechTypeKey] = useState<SpeechTypeKey>('bp')
+  const [speechTypeKey, setSpeechTypeKey] = useState<SpeechTypeKey>('normal')
   const speechType = speechTypes[speechTypeKey]
 
   const onChangeSpeechType = (newTypeKey: SpeechTypeKey) => {
