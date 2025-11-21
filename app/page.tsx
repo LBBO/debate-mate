@@ -2,6 +2,7 @@
 import { DebatePhaseBadge } from '@/app/DebatePhaseBadge'
 import { DebatePhase } from '@/app/debatePhase'
 import { SpeechType, SpeechTypeKey, speechTypes } from '@/app/speechTypes'
+import { TimeDisplay } from '@/components/timeDisplay'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -144,14 +145,13 @@ export default function Home() {
       <div className="grid place-content-center justify-items-center gap-8">
         {isSoftPaused ? (
           <>
-            <p className="font-mono text-7xl font-bold text-slate-500">
-              {(totalRemainingSeconds < 0 ? Math.ceil : Math.floor)(
+            <TimeDisplay
+              minutes={(totalRemainingSeconds < 0 ? Math.ceil : Math.floor)(
                 totalRemainingSeconds / 60,
-              )
-                .toString()
-                .padStart(2, '0')}
-              :{(totalRemainingSeconds % 60).toString().padStart(2, '0')}
-            </p>
+              )}
+              seconds={totalRemainingSeconds % 60}
+              variant="gray"
+            />
             <Badge className="bg-slate-500 text-3xl text-white [&>svg]:size-6">
               <ClockIcon />
               Preparation time
@@ -159,10 +159,7 @@ export default function Home() {
           </>
         ) : (
           <>
-            <p className="font-mono text-7xl font-bold">
-              {minutes.toString().padStart(2, '0')}:
-              {seconds.toString().padStart(2, '0')}
-            </p>
+            <TimeDisplay minutes={minutes} seconds={seconds} />
             <DebatePhaseBadge currentPhase={currentPhase} />
           </>
         )}
