@@ -1,8 +1,11 @@
+import { EyeIcon } from 'lucide-react'
+import { ReactNode } from 'react'
+
 const secondsPerMinute = 60
 
 export type SpeechType = {
-  name: string
-  shortName: string
+  name: ReactNode
+  shortName: ReactNode
   timeLimits: {
     totalRegularTime: number // in seconds
     protectedStart: number // in seconds
@@ -34,7 +37,11 @@ export const speechTypes = {
   },
   demo: {
     name: 'Soundcheck',
-    shortName: 'Demo (⏩)',
+    shortName: (
+      <>
+        <EyeIcon /> Demo
+      </>
+    ),
     timeLimits: {
       totalRegularTime: 7,
       protectedStart: 1,
