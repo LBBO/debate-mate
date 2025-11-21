@@ -6,12 +6,26 @@ import { TimeDisplay } from '@/components/timeDisplay'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { useAudio } from '@/contexts/audioPlayerContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { P, match } from '@gabriel/ts-pattern'
-import { ClockIcon, PauseIcon, PlayIcon, SquareIcon } from 'lucide-react'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
+import {
+  ClockIcon,
+  PauseIcon,
+  PlayIcon,
+  SquareIcon,
+  ZapIcon,
+  ZapOffIcon,
+} from 'lucide-react'
 import Link from 'next/link'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
 
@@ -60,7 +74,8 @@ const getIconForButton = ({
 }
 
 export default function Home() {
-  usePersistentWakeLock()
+  const { type } = usePersistentWakeLock()
+  const isWakeLockActive = type !== undefined
 
   const { playAudio, activateAudio } = useAudio({
     bell: '/bell.mp3',
@@ -127,7 +142,7 @@ export default function Home() {
   }, [currentPhase])
 
   return (
-    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr,auto,1fr] justify-items-center gap-8 p-8">
+    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr_auto_1fr] justify-items-center gap-8 p-8">
       <ButtonGroup>
         {(
           Object.entries(speechTypes) as Array<[SpeechTypeKey, SpeechType]>
@@ -191,8 +206,24 @@ export default function Home() {
           }}
         />
       </div>
-      <div className="grid place-items-end">
+      <div className="grid w-full grid-cols-[1fr_auto_1fr] items-end">
+        <div />
         <Link href="/licences">Licenses</Link>
+        <div className="flex flex-row-reverse">
+          <Popover>
+            <PopoverTrigger>
+              {isWakeLockActive ? (
+                <ZapOffIcon className="text-emerald-700" />
+              ) : (
+                <ZapIcon className="text-amber-700" />
+              )}
+            </PopoverTrigger>
+            <PopoverContent className="bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance">
+              Screen lock {isWakeLockActive ? 'enabled' : 'disabled'}
+              <PopoverPrimitive.Arrow className="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </main>
   )
