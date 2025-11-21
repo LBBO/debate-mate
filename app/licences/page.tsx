@@ -14,6 +14,15 @@ export default function LicencesPage() {
           </a>
         </li>
         <li>
+          End of POI:{' '}
+          <a
+            href="https://pixabay.com/sound-effects/classic-game-action-negative-8-224414/"
+            target="_blank"
+          >
+            &ldquo;Classic Game Action Negative 8&rdquo; by floraphonic
+          </a>
+        </li>
+        <li>
           End of regular time:{' '}
           <a
             href="https://pixabay.com/sound-effects/serene-ding-ding-36597/"

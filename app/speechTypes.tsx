@@ -11,6 +11,7 @@ export type SpeechType = {
     protectedStart: number // in seconds
     protectedEnd: number // in seconds
     gracePeriod: number // in seconds
+    poi: number // in seconds
   }
 }
 
@@ -23,6 +24,7 @@ export const speechTypes = {
       protectedStart: 1 * secondsPerMinute,
       protectedEnd: 1 * secondsPerMinute,
       gracePeriod: 15,
+      poi: 15,
     },
   },
   half: {
@@ -33,6 +35,7 @@ export const speechTypes = {
       protectedStart: 0.5 * secondsPerMinute,
       protectedEnd: 0.5 * secondsPerMinute,
       gracePeriod: 15,
+      poi: 15,
     },
   },
   demo: {
@@ -47,6 +50,7 @@ export const speechTypes = {
       protectedStart: 1,
       protectedEnd: 3,
       gracePeriod: 3,
+      poi: 2,
     },
   },
 } satisfies Record<string, SpeechType>
