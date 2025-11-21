@@ -47,7 +47,7 @@ export const useAudio = <SourceMap extends Record<string, string>>(
     // eslint-disable-next-line react-hooks/immutability
     element.src = sourceMap[key]
     element.pause()
-    element.fastSeek(0)
+    element.currentTime = 0
     void element.play()
   }
 
