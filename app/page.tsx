@@ -188,7 +188,7 @@ export default function Home() {
           active={isRunning}
           size="xl"
           color={[250, 250, 250]}
-          className="bg-slate-900"
+          className="bg-slate-900 hover:bg-slate-900/90 active:bg-slate-900/80"
           onClick={() => {
             activateAudio()
 
