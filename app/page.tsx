@@ -1,7 +1,10 @@
 'use client'
 import { DebatePhaseBadge } from '@/app/DebatePhaseBadge'
 import { DebatePhase } from '@/app/debatePhase'
+import { SpeechType, SpeechTypeKey, speechTypes } from '@/app/speechTypes'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { useAudio } from '@/contexts/audioPlayerContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
@@ -11,19 +14,22 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
 
-const computePhase = (passedSeconds: number): DebatePhase => {
-  const secondsPerMinute = 60
+const computePhase = (
+  passedSeconds: number,
+  speechType: SpeechType,
+): DebatePhase => {
+  const timeLimits = speechType.timeLimits
 
-  if (passedSeconds < 1 * secondsPerMinute) {
+  if (passedSeconds < timeLimits.protectedStart) {
     return 'protected-start'
   }
-  if (passedSeconds < 6 * secondsPerMinute) {
+  if (passedSeconds < timeLimits.totalRegularTime - timeLimits.protectedEnd) {
     return 'unprotected'
   }
-  if (passedSeconds < 7 * secondsPerMinute) {
+  if (passedSeconds < timeLimits.totalRegularTime) {
     return 'protected-end'
   }
-  if (passedSeconds < 7 * secondsPerMinute + 15) {
+  if (passedSeconds < timeLimits.totalRegularTime + timeLimits.gracePeriod) {
     return 'grace-period'
   }
   return 'ended'
@@ -32,11 +38,13 @@ const computePhase = (passedSeconds: number): DebatePhase => {
 const getIconForButton = ({
   isSoftPaused,
   isRunning,
-  minutes,
+  totalSeconds,
+  speechType,
 }: {
   isSoftPaused: boolean
   isRunning: boolean
-  minutes: number
+  totalSeconds: number
+  speechType: SpeechType
 }) => {
   if (!isRunning) {
     return PlayIcon
@@ -44,14 +52,14 @@ const getIconForButton = ({
   if (isSoftPaused) {
     return SquareIcon
   }
-  if (minutes > 0) {
+  if (totalSeconds > speechType.timeLimits.totalRegularTime) {
     return SquareIcon
   }
   return PauseIcon
 }
 
 export default function Home() {
-  const wakeLock = usePersistentWakeLock()
+  usePersistentWakeLock()
 
   const { playAudio, activateAudio } = useAudio({
     bell: '/bell.mp3',
@@ -70,8 +78,30 @@ export default function Home() {
     isRunning,
   } = useStopwatch({ autoStart: false })
 
+  const [speechTypeKey, setSpeechTypeKey] = useState<SpeechTypeKey>('bp')
+  const speechType = speechTypes[speechTypeKey]
+
+  const onChangeSpeechType = (newTypeKey: SpeechTypeKey) => {
+    if (!isRunning || isSoftPaused) {
+      resetTimer(undefined, false)
+      setIsSoftPaused(false)
+    }
+    setSpeechTypeKey(newTypeKey)
+  }
+
+  const totalRemainingSeconds =
+    speechType.timeLimits.totalRegularTime - totalSeconds
+
+  useEffect(() => {
+    if (isSoftPaused && totalRemainingSeconds <= 0) {
+      pauseTimer()
+    }
+  }, [isSoftPaused, pauseTimer, totalRemainingSeconds])
+
   const currentPhase =
-    isRunning || totalSeconds > 0 ? computePhase(totalSeconds) : undefined
+    isRunning || totalSeconds > 0
+      ? computePhase(totalSeconds, speechType)
+      : undefined
 
   useEffect(() => {
     match(currentPhase)
@@ -96,14 +126,31 @@ export default function Home() {
   }, [currentPhase])
 
   return (
-    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr,auto,1fr] gap-8 p-8">
-      <div className=""></div>
+    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr,auto,1fr] justify-items-center gap-8 p-8">
+      <ButtonGroup>
+        {(
+          Object.entries(speechTypes) as Array<[SpeechTypeKey, SpeechType]>
+        ).map(([key, type]) => (
+          <Button
+            key={key}
+            onClick={() => onChangeSpeechType(key)}
+            size="sm"
+            variant={speechTypeKey === key ? 'default' : 'outline'}
+          >
+            {type.shortName}
+          </Button>
+        ))}
+      </ButtonGroup>
       <div className="grid place-content-center justify-items-center gap-8">
         {isSoftPaused ? (
           <>
             <p className="font-mono text-7xl font-bold text-slate-500">
-              {(6 - minutes).toString().padStart(2, '0')}:
-              {(59 - seconds).toString().padStart(2, '0')}
+              {(totalRemainingSeconds < 0 ? Math.ceil : Math.floor)(
+                totalRemainingSeconds / 60,
+              )
+                .toString()
+                .padStart(2, '0')}
+              :{(totalRemainingSeconds % 60).toString().padStart(2, '0')}
             </p>
             <Badge className="bg-slate-500 text-3xl text-white [&>svg]:size-6">
               <ClockIcon />
@@ -123,7 +170,8 @@ export default function Home() {
           icon={getIconForButton({
             isRunning,
             isSoftPaused,
-            minutes,
+            totalSeconds,
+            speechType,
           })}
           active={isRunning}
           size="xl"
@@ -131,10 +179,14 @@ export default function Home() {
           className="bg-slate-900"
           onClick={() => {
             activateAudio()
+
             if (!isRunning) {
               resetTimer(undefined, true)
               setIsSoftPaused(false)
-            } else if (minutes < 7 && !isSoftPaused) {
+            } else if (
+              totalSeconds < speechType.timeLimits.totalRegularTime &&
+              !isSoftPaused
+            ) {
               setIsSoftPaused(true)
             } else {
               pauseTimer()
@@ -143,7 +195,6 @@ export default function Home() {
         />
       </div>
       <div className="grid place-items-end">
-        <p>Wake lock state: {JSON.stringify(wakeLock, null, 2)}</p>
         <Link href="/licences">Licenses</Link>
       </div>
     </main>

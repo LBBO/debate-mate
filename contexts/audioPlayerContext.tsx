@@ -41,7 +41,6 @@ export const useAudio = <SourceMap extends Record<string, string>>(
     if (!audioPlayerContext.current) {
       throw new Error('Attempted to play audio before audio element was ready')
     }
-    console.log('Playing audio for key:', key)
 
     const element = audioPlayerContext.current
     // This is a ref element, which is allowed to be mutated
@@ -62,7 +61,6 @@ export const useAudio = <SourceMap extends Record<string, string>>(
         'Attempted to activate audio before audio element was ready',
       )
     }
-    console.log('Activating audio')
 
     const element = audioPlayerContext.current
     // This is a ref element, which is allowed to be mutated
