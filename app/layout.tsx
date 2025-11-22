@@ -1,5 +1,6 @@
 import './globals.css'
 import { AudioPlayerContextProvider } from '@/contexts/audioPlayerContext'
+import { SettingsProvider } from '@/contexts/settingsContext'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>
+        <SettingsProvider>
+          <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>
+        </SettingsProvider>
       </body>
     </html>
   )

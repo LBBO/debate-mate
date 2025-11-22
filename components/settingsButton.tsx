@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,8 +18,17 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
+import { useSettings, useUpdateSettings } from '@/contexts/settingsContext'
 import { useAppForm } from '@/hooks/form'
-import { PlayIcon, SettingsIcon, SirenIcon, SpeakerIcon } from 'lucide-react'
+import { useEndOfPoiNotification } from '@/hooks/useEndOfPoiNotification'
+import {
+  LockIcon,
+  MessageCircleQuestionMarkIcon,
+  PlayIcon,
+  SettingsIcon,
+  SirenIcon,
+  SpeakerIcon,
+} from 'lucide-react'
 import * as React from 'react'
 import { useId, useState } from 'react'
 import { useWakeLock } from 'react-screen-wake-lock'
@@ -43,11 +55,15 @@ const poiNotificationOptions = [
 export const SettingsButton = () => {
   const { isSupported } = useWakeLock()
   const [isOpen, setIsOpen] = useState(false)
+  const settings = useSettings()
+  const updateSettings = useUpdateSettings()
+  const demoPoiNotification = useEndOfPoiNotification()
 
   const form = useAppForm({
-    defaultValues: {
-      enableScreenLock: true,
-      endOfPoiNotification: 'sound',
+    defaultValues: settings,
+    onSubmit: ({ value }) => {
+      updateSettings(value)
+      setIsOpen(false)
     },
   })
 
@@ -65,10 +81,13 @@ export const SettingsButton = () => {
         />
       </DialogTrigger>
       <DialogContent className="max-w-[90vw] lg:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Settings</DialogTitle>
-        </DialogHeader>
         <form.AppForm>
+          <DialogHeader>
+            <DialogTitle>Settings</DialogTitle>
+            <DialogDescription>
+              These settings will be saved locally on you device.
+            </DialogDescription>
+          </DialogHeader>
           <div className="grid gap-4">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
@@ -76,6 +95,7 @@ export const SettingsButton = () => {
                   htmlFor={enableScreenLockInputId}
                   className="font-medium"
                 >
+                  <LockIcon size={16} />
                   Enable screen lock
                 </Label>
                 <p className="text-muted-foreground text-sm">
@@ -106,16 +126,24 @@ export const SettingsButton = () => {
                   htmlFor={endOfPoiNotificationInputId}
                   className="font-medium"
                 >
+                  <MessageCircleQuestionMarkIcon size={16} />
                   End of POI Notification
                 </Label>
 
-                <Button
-                  variant="outline"
-                  className="bg-secondary text-secondary-foreground outline-secondary-foreground"
-                  size="sm"
+                <form.Subscribe
+                  selector={(state) => state.values.endOfPoiNotification}
                 >
-                  <PlayIcon size={2} /> Test
-                </Button>
+                  {(type) => (
+                    <Button
+                      variant="outline"
+                      className="bg-secondary text-secondary-foreground outline-secondary-foreground"
+                      size="sm"
+                      onClick={() => demoPoiNotification(type)}
+                    >
+                      <PlayIcon /> Test
+                    </Button>
+                  )}
+                </form.Subscribe>
               </div>
               <form.AppField name="endOfPoiNotification">
                 {(field) => (
@@ -138,6 +166,19 @@ export const SettingsButton = () => {
               </p>
             </div>
           </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button
+              onClick={form.handleSubmit}
+              disabled={!form.state.canSubmit}
+            >
+              Save
+            </Button>
+          </DialogFooter>
         </form.AppForm>
       </DialogContent>
     </Dialog>

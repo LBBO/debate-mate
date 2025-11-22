@@ -1,6 +1,6 @@
 import { SpeechType } from '@/app/speechTypes'
 import { TimeDisplay } from '@/components/timeDisplay'
-import { useAudio } from '@/contexts/audioPlayerContext'
+import { useEndOfPoiNotification } from '@/hooks/useEndOfPoiNotification'
 import { cn } from '@/lib/utils'
 import { useCallback, useEffect } from 'react'
 import { useStopwatch } from 'react-timer-hook'
@@ -14,10 +14,7 @@ export const usePoiTimer = ({
 }) => {
   const { pause, reset, seconds, minutes, totalSeconds, isRunning } =
     useStopwatch({ autoStart: false })
-
-  const { playAudio } = useAudio({
-    endOfPoi: '/wrong-answer-boop-boop.mp3',
-  })
+  const notify = useEndOfPoiNotification()
 
   const interruptPoi = useCallback(() => {
     pause()
@@ -41,9 +38,9 @@ export const usePoiTimer = ({
   useEffect(() => {
     if (totalSeconds > speechType.timeLimits.poi) {
       interruptPoi()
-      playAudio('endOfPoi')
+      notify()
     }
-  }, [interruptPoi, playAudio, speechType.timeLimits.poi, totalSeconds])
+  }, [interruptPoi, notify, speechType.timeLimits.poi, totalSeconds])
 
   const timeDisplay = (
     <TimeDisplay

@@ -1,25 +1,30 @@
+import { useSettings } from '@/contexts/settingsContext'
 import { useCallback, useEffect } from 'react'
 import { useWakeLock } from 'react-screen-wake-lock'
 
 export const usePersistentWakeLock = () => {
+  const settings = useSettings()
   const wakeLock = useWakeLock({
-    reacquireOnPageVisible: true,
     onError: (e) => console.error('Requesting wake lock failed:', e),
   })
   const { request, release, released } = wakeLock
   const isAcquired = released === false
 
   const requestLock = useCallback(() => {
-    void request()
-  }, [request])
+    if (settings.enableScreenLock) {
+      void request()
+    }
+  }, [request, settings.enableScreenLock])
 
   useEffect(() => {
     requestLock()
+    document.addEventListener('visibilitychange', requestLock)
 
     return () => {
       void release()
+      document.removeEventListener('visibilitychange', requestLock)
     }
-  }, [request, release, requestLock])
+  }, [release, requestLock])
 
   useEffect(() => {
     if (!isAcquired) {
