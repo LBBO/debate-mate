@@ -11,7 +11,7 @@ import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { useAudio } from '@/contexts/audioPlayerContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { usePoiTimer } from '@/hooks/usePoiTimer'
-import { P, match } from '@gabriel/ts-pattern'
+import { match, P } from '@gabriel/ts-pattern'
 import {
   ClockIcon,
   MessageCircleOffIcon,
@@ -70,15 +70,9 @@ const getIconForButton = ({
 }
 
 export default function Home() {
-  const { type } = usePersistentWakeLock()
-  const isWakeLockActive = type !== undefined
+  usePersistentWakeLock()
 
-  const { playAudio, activateAudio } = useAudio({
-    bell: '/bell.mp3',
-    friendlyReminder: '/friendly-reminder.mp3',
-    regularTimeOver: '/regular-time-over.mp3',
-    completelyOver: '/completely-over.mp3',
-  })
+  const { playAudio, activateAudio } = useAudio()
 
   const [isSoftPaused, setIsSoftPaused] = useState(false)
   const {

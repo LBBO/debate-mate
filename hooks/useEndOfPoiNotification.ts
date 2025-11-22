@@ -5,9 +5,7 @@ import { useCallback } from 'react'
 
 export const useEndOfPoiNotification = () => {
   const settings = useSettings()
-  const { playAudio } = useAudio({
-    endOfPoi: '/wrong-answer-boop-boop.mp3',
-  })
+  const { playAudio } = useAudio()
 
   return useCallback(
     (type?: Settings['endOfPoiNotification']) => {

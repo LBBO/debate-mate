@@ -1,6 +1,7 @@
 'use client'
 
 import { useSettings } from '@/contexts/settingsContext'
+import { addBasePath } from 'next/dist/client/add-base-path'
 import {
   PropsWithChildren,
   RefObject,
@@ -11,6 +12,14 @@ import {
 } from 'react'
 
 const context = createContext<RefObject<HTMLAudioElement | null> | null>(null)
+
+const audioSources = {
+  bell: '/bell.mp3',
+  friendlyReminder: '/friendly-reminder.mp3',
+  regularTimeOver: '/regular-time-over.mp3',
+  completelyOver: '/completely-over.mp3',
+  endOfPoi: '/wrong-answer-boop-boop.mp3',
+}
 
 export const AudioPlayerContextProvider = ({ children }: PropsWithChildren) => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -33,13 +42,11 @@ const useAudioPlayerContext = () => {
   return audioPlayerContext
 }
 
-export const useAudio = <SourceMap extends Record<string, string>>(
-  sourceMap: SourceMap,
-) => {
+export const useAudio = () => {
   const settings = useSettings()
   const audioPlayerContext = useAudioPlayerContext()
 
-  const playAudio = (key: keyof SourceMap) => {
+  const playAudio = (key: keyof typeof audioSources) => {
     if (!audioPlayerContext.current) {
       throw new Error('Attempted to play audio before audio element was ready')
     }
@@ -51,7 +58,7 @@ export const useAudio = <SourceMap extends Record<string, string>>(
     const element = audioPlayerContext.current
     // This is a ref element, which is allowed to be mutated
     // eslint-disable-next-line react-hooks/immutability
-    element.src = sourceMap[key]
+    element.src = addBasePath(audioSources[key])
     element.pause()
     element.currentTime = 0
     void element.play()
