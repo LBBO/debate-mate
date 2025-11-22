@@ -2,21 +2,16 @@
 import { DebatePhaseBadge } from '@/app/DebatePhaseBadge'
 import { DebatePhase } from '@/app/debatePhase'
 import { SpeechType, SpeechTypeKey, speechTypes } from '@/app/speechTypes'
+import { SettingsButton } from '@/components/settingsButton'
 import { TimeDisplay } from '@/components/timeDisplay'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { useAudio } from '@/contexts/audioPlayerContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { usePoiTimer } from '@/hooks/usePoiTimer'
 import { P, match } from '@gabriel/ts-pattern'
-import * as PopoverPrimitive from '@radix-ui/react-popover'
 import {
   ClockIcon,
   MessageCircleOffIcon,
@@ -24,8 +19,6 @@ import {
   PauseIcon,
   PlayIcon,
   SquareIcon,
-  ZapIcon,
-  ZapOffIcon,
 } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
@@ -244,23 +237,11 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="grid w-full grid-cols-[1fr_auto_1fr] items-end">
+      <div className="grid w-full grid-cols-[1fr_auto_1fr] content-end items-center">
         <div />
         <Link href="/licences">Licenses</Link>
         <div className="flex flex-row-reverse">
-          <Popover>
-            <PopoverTrigger>
-              {isWakeLockActive ? (
-                <ZapOffIcon className="text-emerald-700" />
-              ) : (
-                <ZapIcon className="text-amber-700" />
-              )}
-            </PopoverTrigger>
-            <PopoverContent className="bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance">
-              Screen lock {isWakeLockActive ? 'enabled' : 'disabled'}
-              <PopoverPrimitive.Arrow className="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
-            </PopoverContent>
-          </Popover>
+          <SettingsButton />
         </div>
       </div>
     </main>
