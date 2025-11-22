@@ -1,5 +1,6 @@
 'use client'
 
+import { useSettings } from '@/contexts/settingsContext'
 import {
   PropsWithChildren,
   RefObject,
@@ -35,11 +36,16 @@ const useAudioPlayerContext = () => {
 export const useAudio = <SourceMap extends Record<string, string>>(
   sourceMap: SourceMap,
 ) => {
+  const settings = useSettings()
   const audioPlayerContext = useAudioPlayerContext()
 
   const playAudio = (key: keyof SourceMap) => {
     if (!audioPlayerContext.current) {
       throw new Error('Attempted to play audio before audio element was ready')
+    }
+
+    if (settings.muteAudio) {
+      return
     }
 
     const element = audioPlayerContext.current

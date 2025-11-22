@@ -11,11 +11,13 @@ import {
 export type Settings = {
   enableScreenLock: boolean
   endOfPoiNotification: 'sound' | 'alert'
+  muteAudio: boolean
 }
 
 const defaultSettings: Settings = {
   enableScreenLock: true,
   endOfPoiNotification: 'sound' as 'sound' | 'alert',
+  muteAudio: false,
 }
 
 const context = createContext<{
@@ -36,6 +38,8 @@ export const SettingsProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const fromLocalStorage = localStorage.getItem(localStorageKey)
     if (fromLocalStorage !== null) {
+      // We only call this on mount, so it's fine
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSettings(JSON.parse(fromLocalStorage))
     }
   }, [])

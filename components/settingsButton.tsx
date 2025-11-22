@@ -28,6 +28,7 @@ import {
   SettingsIcon,
   SirenIcon,
   SpeakerIcon,
+  VolumeXIcon,
 } from 'lucide-react'
 import * as React from 'react'
 import { useId, useState } from 'react'
@@ -69,6 +70,7 @@ export const SettingsButton = () => {
 
   const enableScreenLockInputId = useId()
   const endOfPoiNotificationInputId = useId()
+  const muteAudioInputId = useId()
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -90,7 +92,7 @@ export const SettingsButton = () => {
           </DialogHeader>
           <div className="grid gap-4">
             <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
+              <div className="space-y-1">
                 <Label
                   htmlFor={enableScreenLockInputId}
                   className="font-medium"
@@ -164,6 +166,24 @@ export const SettingsButton = () => {
               <p className="text-muted-foreground text-sm">
                 How would you like to be notified when a POI ends?
               </p>
+            </div>
+
+            <Separator />
+
+            <div className="flex items-center justify-between gap-2">
+              <div className="space-y-1">
+                <Label htmlFor={muteAudioInputId} className="font-medium">
+                  <VolumeXIcon size={16} />
+                  Mute all audio notifications
+                </Label>
+                <p className="text-muted-foreground text-sm">
+                  Disables all audio notifications. Useful for using the timer
+                  as a speaker instead of a juror.
+                </p>
+              </div>
+              <form.AppField name="muteAudio">
+                {(field) => <field.Switch id={muteAudioInputId} />}
+              </form.AppField>
             </div>
           </div>
           <DialogFooter>
