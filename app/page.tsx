@@ -11,7 +11,7 @@ import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import { useAudio } from '@/contexts/audioPlayerContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { usePoiTimer } from '@/hooks/usePoiTimer'
-import { match, P } from '@gabriel/ts-pattern'
+import { P, match } from '@gabriel/ts-pattern'
 import {
   ClockIcon,
   MessageCircleOffIcon,

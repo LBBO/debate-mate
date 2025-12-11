@@ -15,7 +15,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -34,8 +34,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -67,7 +67,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
-
 
   # Deployment job
   deploy:
