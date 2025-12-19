@@ -16,8 +16,8 @@ const context = createContext<RefObject<HTMLAudioElement | null> | null>(null)
 const audioSources = {
   bell: '/bell.mp3',
   friendlyReminder: '/friendly-reminder.mp3',
-  regularTimeOver: '/regular-time-over.mp3',
-  completelyOver: '/completely-over.mp3',
+  regularTimeOver: '/bell-twice.mp3',
+  completelyOver: '/regular-time-over.mp3',
   endOfPoi: '/wrong-answer-boop-boop.mp3',
 }
 
