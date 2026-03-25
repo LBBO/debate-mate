@@ -8,10 +8,15 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
+import {
+  WheelPicker,
+  type WheelPickerOption,
+  WheelPickerWrapper,
+} from '@/components/wheel-picker/wheel-picker'
 import { useAudio } from '@/contexts/audioPlayerContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { usePoiTimer } from '@/hooks/usePoiTimer'
-import { match, P } from '@gabriel/ts-pattern'
+import { P, match } from '@gabriel/ts-pattern'
 import {
   ClockIcon,
   MessageCircleOffIcon,
@@ -48,12 +53,12 @@ const computePhase = (
 const getIconForButton = ({
   isSoftPaused,
   isRunning,
-  totalSeconds,
+  elapsedSeconds,
   speechType,
 }: {
   isSoftPaused: boolean
   isRunning: boolean
-  totalSeconds: number
+  elapsedSeconds: number
   speechType: SpeechType
 }) => {
   if (!isRunning) {
@@ -62,10 +67,35 @@ const getIconForButton = ({
   if (isSoftPaused) {
     return SquareIcon
   }
-  if (totalSeconds > speechType.timeLimits.totalRegularTime) {
+  if (elapsedSeconds > speechType.timeLimits.totalRegularTime) {
     return SquareIcon
   }
   return PauseIcon
+}
+
+const deductionStepSeconds = 1
+
+const getMaxDeductibleSeconds = (speechType: SpeechType) =>
+  speechType.timeLimits.totalRegularTime + speechType.timeLimits.gracePeriod
+
+const clampDeductedSeconds = (seconds: number, speechType: SpeechType) =>
+  Math.max(0, Math.min(seconds, getMaxDeductibleSeconds(speechType)))
+
+const getDeductionOptions = (
+  maxDeductibleSeconds: number,
+): WheelPickerOption<number>[] => {
+  const options: WheelPickerOption<number>[] = Array.from(
+    { length: Math.ceil(maxDeductibleSeconds / deductionStepSeconds) + 1 },
+    (_, index) => {
+      const value = Math.min(index * deductionStepSeconds, maxDeductibleSeconds)
+      return {
+        value,
+        label: `${value}s`,
+      }
+    },
+  )
+
+  return options
 }
 
 export default function Home() {
@@ -77,14 +107,21 @@ export default function Home() {
   const {
     pause: pauseTimer,
     reset: resetTimer,
-    seconds,
-    minutes,
     totalSeconds,
     isRunning,
   } = useStopwatch({ autoStart: false })
 
   const [speechTypeKey, setSpeechTypeKey] = useState<SpeechTypeKey>('normal')
   const speechType = speechTypes[speechTypeKey]
+  const [deductedSeconds, setDeductedSeconds] = useState(0)
+
+  const maxDeductibleSeconds = getMaxDeductibleSeconds(speechType)
+  const deductionOptions = React.useMemo(
+    () => getDeductionOptions(maxDeductibleSeconds),
+    [maxDeductibleSeconds],
+  )
+
+  const effectiveTotalSeconds = totalSeconds + deductedSeconds
 
   const {
     togglePoi,
@@ -100,11 +137,12 @@ export default function Home() {
       resetTimer(undefined, false)
       setIsSoftPaused(false)
     }
+    setDeductedSeconds(0)
     setSpeechTypeKey(newTypeKey)
   }
 
   const totalRemainingSeconds =
-    speechType.timeLimits.totalRegularTime - totalSeconds
+    speechType.timeLimits.totalRegularTime - effectiveTotalSeconds
 
   useEffect(() => {
     if (isSoftPaused && totalRemainingSeconds <= 0) {
@@ -113,8 +151,8 @@ export default function Home() {
   }, [isSoftPaused, pauseTimer, totalRemainingSeconds])
 
   const currentPhase =
-    isRunning || totalSeconds > 0
-      ? computePhase(totalSeconds, speechType)
+    isRunning || effectiveTotalSeconds > 0
+      ? computePhase(effectiveTotalSeconds, speechType)
       : undefined
 
   useEffect(() => {
@@ -180,17 +218,46 @@ export default function Home() {
         ) : (
           <>
             {poiTimeDisplay}
-            <TimeDisplay minutes={minutes} seconds={seconds} />
+            <TimeDisplay
+              minutes={Math.floor(effectiveTotalSeconds / 60)}
+              seconds={effectiveTotalSeconds % 60}
+            />
             <DebatePhaseBadge currentPhase={currentPhase} />
           </>
         )}
         <div className="grid w-full grid-cols-3">
-          <div />
+          <div className="place-self-center">
+            {isRunning ? (
+              <>
+                <p className={'mb-1 text-center text-xs text-slate-600'}>
+                  Deduct
+                </p>
+                <WheelPickerWrapper className="w-24">
+                  <WheelPicker<number>
+                    aria-label="Deduct timer seconds"
+                    options={deductionOptions}
+                    value={deductedSeconds}
+                    visibleCount={10}
+                    optionItemHeight={24}
+                    classNames={{
+                      optionItem: 'text-sm',
+                      highlightItem: 'text-sm font-semibold',
+                    }}
+                    onValueChange={(value) =>
+                      setDeductedSeconds(
+                        clampDeductedSeconds(value, speechType),
+                      )
+                    }
+                  />
+                </WheelPickerWrapper>
+              </>
+            ) : null}
+          </div>
           <IconButton
             icon={getIconForButton({
               isRunning,
               isSoftPaused,
-              totalSeconds,
+              elapsedSeconds: effectiveTotalSeconds,
               speechType,
             })}
             active={isRunning}
@@ -203,8 +270,10 @@ export default function Home() {
               if (!isRunning) {
                 resetTimer(undefined, true)
                 setIsSoftPaused(false)
+                setDeductedSeconds(0)
               } else if (
-                totalSeconds < speechType.timeLimits.totalRegularTime &&
+                effectiveTotalSeconds <
+                  speechType.timeLimits.totalRegularTime &&
                 !isSoftPaused
               ) {
                 setIsSoftPaused(true)
