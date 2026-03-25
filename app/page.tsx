@@ -20,7 +20,6 @@ import {
   PlayIcon,
   SquareIcon,
 } from 'lucide-react'
-import Link from 'next/link'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
@@ -233,7 +232,7 @@ export default function Home() {
       </div>
       <div className="grid w-full grid-cols-[1fr_auto_1fr] content-end items-center">
         <div />
-        <Link href="/licences">Licenses</Link>
+        <div />
         <div className="flex flex-row-reverse">
           <SettingsButton />
         </div>

@@ -46,20 +46,20 @@ export const useAudio = () => {
   const settings = useSettings()
   const audioPlayerContext = useAudioPlayerContext()
 
-  const playAudio = (key: keyof typeof audioSources) => {
+  const playAudio = (key: keyof typeof audioSources, overrideMute = false) => {
     if (!audioPlayerContext.current) {
       throw new Error('Attempted to play audio before audio element was ready')
     }
 
-    if (settings.muteAudio) {
+    if (settings.muteAudio && !overrideMute) {
       return
     }
 
     const element = audioPlayerContext.current
+    element.pause()
     // This is a ref element, which is allowed to be mutated
     // eslint-disable-next-line react-hooks/immutability
     element.src = addBasePath(audioSources[key])
-    element.pause()
     element.currentTime = 0
     void element.play()
   }

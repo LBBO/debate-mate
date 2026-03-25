@@ -1,4 +1,3 @@
-import { EyeIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 
 const secondsPerMinute = 60
@@ -38,19 +37,15 @@ export const speechTypes = {
       poi: 15,
     },
   },
-  demo: {
-    name: 'Soundcheck',
-    shortName: (
-      <>
-        <EyeIcon /> Demo
-      </>
-    ),
+  rebuttal: {
+    name: 'Rebuttal',
+    shortName: 'Rebuttal (1 min)',
     timeLimits: {
-      totalRegularTime: 7,
-      protectedStart: 1,
-      protectedEnd: 3,
-      gracePeriod: 3,
-      poi: 2,
+      totalRegularTime: 1 * secondsPerMinute,
+      protectedStart: 1 * secondsPerMinute,
+      protectedEnd: 0,
+      gracePeriod: 0,
+      poi: 0,
     },
   },
 } satisfies Record<string, SpeechType>

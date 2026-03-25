@@ -11,12 +11,19 @@ import {
 
 export const DebatePhaseBadge = ({
   currentPhase,
+  className,
 }: {
   currentPhase?: DebatePhase
+  className?: string
 }) => {
   if (currentPhase === undefined) {
     return (
-      <Badge className="invisible bg-transparent text-3xl text-transparent">
+      <Badge
+        className={cn(
+          'invisible bg-transparent text-3xl text-transparent',
+          className,
+        )}
+      >
         Paused
       </Badge>
     )
@@ -35,6 +42,7 @@ export const DebatePhaseBadge = ({
           .with('grace-period', () => 'bg-amber-400 text-slate-900')
           .with('ended', () => 'bg-red-700 text-white')
           .exhaustive(),
+        className,
       )}
     >
       {match(currentPhase)
