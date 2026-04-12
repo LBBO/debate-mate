@@ -182,7 +182,7 @@ export default function Home() {
     (currentPhase !== 'unprotected' || !isRunning || isSoftPaused)
 
   return (
-    <main className="grid min-h-screen w-full grid-cols-1 grid-rows-[1fr_auto_1fr] justify-items-center gap-8 p-8">
+    <main className="grid min-h-dvh w-full grid-cols-1 grid-rows-[1fr_auto_1fr] justify-items-center gap-8 p-8">
       <ButtonGroup>
         {(
           Object.entries(speechTypes) as Array<[SpeechTypeKey, SpeechType]>
