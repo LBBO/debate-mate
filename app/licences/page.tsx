@@ -1,6 +1,16 @@
+import { Button } from '@/components/ui/button'
+import { ChevronLeftIcon } from 'lucide-react'
+import Link from 'next/link'
+
 export default function LicencesPage() {
   return (
-    <main className="prose p-8">
+    <main className="prose grid p-8">
+      <Button asChild variant="outline" className="mb-6 w-fit">
+        <Link href="/">
+          <ChevronLeftIcon />
+          Back
+        </Link>
+      </Button>
       <h1>Licences</h1>
       <h2>Sounds</h2>
       <ul>
