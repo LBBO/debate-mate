@@ -12,7 +12,6 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_swipe_back_ios::init())
-        .plugin(tauri_plugin_safe_area_insets_css::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
