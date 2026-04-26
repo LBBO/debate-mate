@@ -1,0 +1,7 @@
+[settings]
+env_shell_expand = true
+
+[env]
+JAVA_HOME = "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+ANDROID_HOME = "$HOME/Library/Android/sdk"
+NDK_HOME = "$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"

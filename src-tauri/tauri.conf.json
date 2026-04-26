@@ -20,7 +20,8 @@
       }
     ],
     "security": {
-      "csp": {}
+      "csp": {},
+      "devCsp": null
     }
   },
   "bundle": {
