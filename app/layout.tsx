@@ -1,7 +1,7 @@
 import './globals.css'
 import { AudioPlayerContextProvider } from '@/contexts/audioPlayerContext'
 import { SettingsProvider } from '@/contexts/settingsContext'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 const geistSans = Geist({
@@ -13,6 +13,10 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+}
 
 export const metadata: Metadata = {
   title: 'Debate Mate',
@@ -27,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh p-safe`}
       >
         <SettingsProvider>
           <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>

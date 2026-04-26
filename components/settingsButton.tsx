@@ -15,7 +15,7 @@ import Link from 'next/link'
 
 export const SettingsButton = () => {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <IconButton
           icon={EllipsisVerticalIcon}

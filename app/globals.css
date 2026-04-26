@@ -117,9 +117,19 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    height: 100dvh;
+  }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@utility p-safe {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
 }
 
 @supports (height: 100dvh) {
