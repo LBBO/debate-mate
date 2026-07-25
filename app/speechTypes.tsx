@@ -31,7 +31,7 @@ export const speechTypes = {
     shortName: 'Half (3.5 min)',
     timeLimits: {
       totalRegularTime: 3.5 * secondsPerMinute,
-      protectedStart: 0.5 * secondsPerMinute,
+      protectedStart: 1 * secondsPerMinute,
       protectedEnd: 0.5 * secondsPerMinute,
       gracePeriod: 15,
       poi: 15,
