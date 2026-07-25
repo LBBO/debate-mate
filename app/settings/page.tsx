@@ -111,12 +111,17 @@ export default function SettingsPage() {
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <Label htmlFor={endOfPoiNotificationInputId} className="font-medium">
+              <Label
+                htmlFor={endOfPoiNotificationInputId}
+                className="font-medium"
+              >
                 <MessageCircleQuestionMarkIcon size={16} />
                 End of POI notification
               </Label>
 
-              <form.Subscribe selector={(state) => state.values.endOfPoiNotification}>
+              <form.Subscribe
+                selector={(state) => state.values.endOfPoiNotification}
+              >
                 {(type) => (
                   <Button
                     variant="outline"

@@ -1,6 +1,2 @@
 export type DebatePhase =
-  | 'protected-start'
-  | 'unprotected'
-  | 'protected-end'
-  | 'grace-period'
-  | 'ended'
+  'protected-start' | 'unprotected' | 'protected-end' | 'grace-period' | 'ended'
