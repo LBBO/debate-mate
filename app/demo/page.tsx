@@ -15,7 +15,6 @@ import {
   PlayIcon,
 } from 'lucide-react'
 import Link from 'next/link'
-import { ReactNode } from 'react'
 
 type OtherPhase = 'preparation-time' | 'poi'
 
