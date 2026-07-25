@@ -22,6 +22,7 @@ export const SettingsButton = () => {
           color={[64, 64, 64]}
           className="bg-neutral-200"
           size="lg"
+          aria-label="Open menu"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

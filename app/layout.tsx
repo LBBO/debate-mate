@@ -1,4 +1,5 @@
 import './globals.css'
+import { RoutePrefetcher } from '@/app/routePrefetcher'
 import { AudioPlayerContextProvider } from '@/contexts/audioPlayerContext'
 import { SettingsProvider } from '@/contexts/settingsContext'
 import type { Metadata, Viewport } from 'next'
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} p-safe h-dvh antialiased`}
       >
+        <RoutePrefetcher />
         <SettingsProvider>
           <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>
         </SettingsProvider>
