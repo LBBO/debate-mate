@@ -1,7 +1,13 @@
 'use client'
 import { DebatePhaseBadge } from '@/app/DebatePhaseBadge'
-import { DebatePhase } from '@/app/debatePhase'
 import { SpeechType, SpeechTypeKey, speechTypes } from '@/app/speechTypes'
+import {
+  clampDeductedSeconds,
+  computePhase,
+  getDeductionOptions,
+  getIconForButton,
+  getMaxDeductibleSeconds,
+} from '@/app/timerLogic'
 import { SettingsButton } from '@/components/settingsButton'
 import { TimeDisplay } from '@/components/timeDisplay'
 import { Badge } from '@/components/ui/badge'
@@ -10,7 +16,6 @@ import { ButtonGroup } from '@/components/ui/button-group'
 import { IconButton } from '@/components/ui/shadcn-io/icon-button'
 import {
   WheelPicker,
-  type WheelPickerOption,
   WheelPickerWrapper,
 } from '@/components/wheel-picker/wheel-picker'
 import { useAudio } from '@/contexts/audioPlayerContext'
@@ -21,82 +26,11 @@ import {
   ClockIcon,
   MessageCircleOffIcon,
   MessageCircleQuestionMarkIcon,
-  PauseIcon,
-  PlayIcon,
   SquareIcon,
 } from 'lucide-react'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useStopwatch } from 'react-timer-hook'
-
-const computePhase = (
-  passedSeconds: number,
-  speechType: SpeechType,
-): DebatePhase => {
-  const timeLimits = speechType.timeLimits
-
-  if (passedSeconds < timeLimits.protectedStart) {
-    return 'protected-start'
-  }
-  if (passedSeconds < timeLimits.totalRegularTime - timeLimits.protectedEnd) {
-    return 'unprotected'
-  }
-  if (passedSeconds < timeLimits.totalRegularTime) {
-    return 'protected-end'
-  }
-  if (passedSeconds < timeLimits.totalRegularTime + timeLimits.gracePeriod) {
-    return 'grace-period'
-  }
-  return 'ended'
-}
-
-const getIconForButton = ({
-  isSoftPaused,
-  isRunning,
-  elapsedSeconds,
-  speechType,
-}: {
-  isSoftPaused: boolean
-  isRunning: boolean
-  elapsedSeconds: number
-  speechType: SpeechType
-}) => {
-  if (!isRunning) {
-    return PlayIcon
-  }
-  if (isSoftPaused) {
-    return SquareIcon
-  }
-  if (elapsedSeconds > speechType.timeLimits.totalRegularTime) {
-    return SquareIcon
-  }
-  return PauseIcon
-}
-
-const deductionStepSeconds = 1
-
-const getMaxDeductibleSeconds = (speechType: SpeechType) =>
-  speechType.timeLimits.totalRegularTime + speechType.timeLimits.gracePeriod
-
-const clampDeductedSeconds = (seconds: number, speechType: SpeechType) =>
-  Math.max(0, Math.min(seconds, getMaxDeductibleSeconds(speechType)))
-
-const getDeductionOptions = (
-  maxDeductibleSeconds: number,
-): WheelPickerOption<number>[] => {
-  const options: WheelPickerOption<number>[] = Array.from(
-    { length: Math.ceil(maxDeductibleSeconds / deductionStepSeconds) + 1 },
-    (_, index) => {
-      const value = Math.min(index * deductionStepSeconds, maxDeductibleSeconds)
-      return {
-        value,
-        label: `${value}s`,
-      }
-    },
-  )
-
-  return options
-}
 
 export default function Home() {
   usePersistentWakeLock()
@@ -260,6 +194,15 @@ export default function Home() {
               elapsedSeconds: effectiveTotalSeconds,
               speechType,
             })}
+            aria-label={
+              !isRunning
+                ? 'Start timer'
+                : isSoftPaused ||
+                    effectiveTotalSeconds >
+                      speechType.timeLimits.totalRegularTime
+                  ? 'Stop timer'
+                  : 'Pause timer'
+            }
             active={isRunning}
             size="xl"
             color={[250, 250, 250]}
@@ -289,6 +232,11 @@ export default function Home() {
                 : isPoiForbidden
                   ? MessageCircleOffIcon
                   : MessageCircleQuestionMarkIcon
+            }
+            aria-label={
+              isPoiRunning
+                ? 'Stop point of information'
+                : 'Point of information'
             }
             active={isPoiRunning}
             size="lg"
