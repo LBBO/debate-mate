@@ -1,6 +1,7 @@
 import withSerwistInit from '@serwist/next'
 import type { NextConfig } from 'next'
 import { spawnSync } from 'node:child_process'
+import { allRoutes } from './lib/routes'
 
 // For tauri config
 const isProd = process.env.NODE_ENV === 'production'
@@ -27,7 +28,7 @@ const nextConfig: NextConfig = {
 const revision =
   spawnSync('git', ['rev-parse', 'HEAD'], {
     encoding: 'utf-8',
-  }).stdout?.trim() ?? crypto.randomUUID()
+  }).stdout?.trim() || crypto.randomUUID()
 
 const withSerwist = withSerwistInit({
   swSrc: 'app/sw.ts',
@@ -43,12 +44,10 @@ const withSerwist = withSerwistInit({
   // warning/breakage for local `pnpm dev`, where offline testing isn't a
   // concern anyway.
   disable: !isProd,
-  additionalPrecacheEntries: ['/', '/settings', '/demo', '/licences'].map(
-    (url) => ({
-      url,
-      revision,
-    }),
-  ),
+  additionalPrecacheEntries: allRoutes.map((url) => ({
+    url,
+    revision,
+  })),
 })
 
 export default withSerwist(nextConfig)

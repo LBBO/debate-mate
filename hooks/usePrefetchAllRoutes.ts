@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-
-const allRoutes = ['/', '/settings', '/demo', '/licences']
+import { allRoutes } from '@/lib/routes'
 
 /**
  * Prefetches every route so the service worker caches all of them, no
@@ -18,13 +17,29 @@ export const usePrefetchAllRoutes = () => {
       allRoutes.forEach((route) => router.prefetch(route))
     }
 
-    // On a fresh visit, the service worker doesn't control this page yet at
-    // mount time — fetches issued before it takes control bypass the SW
-    // entirely and can never end up in its cache, no matter how long they're
-    // given afterwards. Wait for control so the RSC payload fetches below are
-    // actually interceptable and cacheable.
+    // `ready` only means a SW is active — it says nothing about *this* page.
+    // On a fresh visit (or right after an update takes over), this page load
+    // isn't controlled yet, so fetches issued now bypass the SW and never
+    // land in its cache. The SW calls clients.claim() (see app/sw.ts), which
+    // fires `controllerchange` the moment it takes control — wait for that
+    // when we're not controlled yet, otherwise the controller is already in
+    // place and we can prefetch right away.
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(prefetchAllRoutes)
+      if (navigator.serviceWorker.controller) {
+        prefetchAllRoutes()
+      } else {
+        navigator.serviceWorker.addEventListener(
+          'controllerchange',
+          prefetchAllRoutes,
+          { once: true },
+        )
+        return () => {
+          navigator.serviceWorker.removeEventListener(
+            'controllerchange',
+            prefetchAllRoutes,
+          )
+        }
+      }
     } else {
       prefetchAllRoutes()
     }
