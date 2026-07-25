@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh p-safe`}
+        className={`${geistSans.variable} ${geistMono.variable} p-safe h-dvh antialiased`}
       >
         <SettingsProvider>
           <AudioPlayerContextProvider>{children}</AudioPlayerContextProvider>
