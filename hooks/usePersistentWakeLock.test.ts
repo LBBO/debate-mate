@@ -37,12 +37,24 @@ describe('usePersistentWakeLock', () => {
     expect(request).not.toHaveBeenCalled()
   })
 
-  it('releases the wake lock on unmount', () => {
-    const { unmount } = renderHook(() => usePersistentWakeLock())
+  it('releases the wake lock on unmount when it was acquired', () => {
+    const { unmount, rerender } = renderHook(() => usePersistentWakeLock())
+    released = false
+    rerender()
 
     unmount()
 
     expect(release).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not call release on unmount when the lock was never acquired', () => {
+    // The underlying library warns if `release` is called without a prior
+    // successful `request` - only call it when we actually hold the lock.
+    const { unmount } = renderHook(() => usePersistentWakeLock())
+
+    unmount()
+
+    expect(release).not.toHaveBeenCalled()
   })
 
   it('retries acquiring the lock on the next click when not yet acquired (e.g. iOS Safari)', () => {

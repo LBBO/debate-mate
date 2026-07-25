@@ -13,6 +13,18 @@ import {
 
 const context = createContext<RefObject<HTMLAudioElement | null> | null>(null)
 
+// A subsequent `pause()` (e.g. from another `playAudio` call arriving before
+// this one's `play()` resolves) rejects the promise with an expected
+// AbortError - not a real playback failure, so it shouldn't be logged as one.
+const playAndIgnoreAbort = (element: HTMLAudioElement) => {
+  element.play().catch((error: unknown) => {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return
+    }
+    console.error('Failed to play audio:', error)
+  })
+}
+
 const audioSources = {
   bell: '/bell.mp3',
   friendlyReminder: '/friendly-reminder.mp3',
@@ -61,7 +73,7 @@ export const useAudio = () => {
     // eslint-disable-next-line react-hooks/immutability
     element.src = addBasePath(audioSources[key])
     element.currentTime = 0
-    void element.play()
+    playAndIgnoreAbort(element)
   }
 
   const [hasBeenActivated, setHasBeenActivated] = useState(false)
@@ -81,7 +93,7 @@ export const useAudio = () => {
     element.src =
       // 0-second sound file to unlock audio on iOS
       'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAbAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV////////////////////////////////////////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQDkAAAAAAAAAGw9wrNaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDsAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxHYAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
-    void element.play()
+    playAndIgnoreAbort(element)
     setHasBeenActivated(true)
   }
 

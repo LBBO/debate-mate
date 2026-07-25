@@ -23,7 +23,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useId } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { useWakeLock } from 'react-screen-wake-lock'
 
 const poiNotificationOptions = [
@@ -48,6 +48,17 @@ const poiNotificationOptions = [
 export default function SettingsPage() {
   const router = useRouter()
   const { isSupported } = useWakeLock()
+  // `isSupported` reads `navigator.wakeLock` directly, which isn't available
+  // during SSR. Deferring it to a client-only state avoids a hydration
+  // mismatch between the server render (unsupported) and the first client
+  // render (supported).
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    // We only call this on mount, so it's fine
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+  }, [])
+  const screenLockSupported = !mounted || isSupported
   const settings = useSettings()
   const updateSettings = useUpdateSettings()
   const demoPoiNotification = useEndOfPoiNotification()
@@ -91,7 +102,7 @@ export default function SettingsPage() {
               <p className="text-muted-foreground text-sm">
                 Prevent your screen from sleeping while the app is open.
               </p>
-              {!isSupported ? (
+              {!screenLockSupported ? (
                 <p className="text-sm text-red-700">
                   Screen lock is not available on your device.
                 </p>
@@ -101,7 +112,7 @@ export default function SettingsPage() {
               {(field) => (
                 <field.Switch
                   id={enableScreenLockInputId}
-                  disabled={!isSupported}
+                  disabled={!screenLockSupported}
                 />
               )}
             </form.AppField>

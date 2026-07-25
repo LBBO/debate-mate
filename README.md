@@ -21,3 +21,19 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Testing
+
+Unit and component tests use [Vitest](https://vitest.dev):
+
+```bash
+pnpm test        # run once
+pnpm test:watch  # watch mode
+```
+
+End-to-end tests use [Playwright](https://playwright.dev) (run `pnpm exec playwright install` once to fetch browsers):
+
+```bash
+pnpm test:e2e          # functional flows, against `next dev`
+pnpm test:e2e:offline  # service worker / offline behavior, against a production build
+```
