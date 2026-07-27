@@ -1,6 +1,6 @@
+import { allRoutes } from '@/lib/routes'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { allRoutes } from '@/lib/routes'
 
 /**
  * Prefetches every route so the service worker caches all of them, no

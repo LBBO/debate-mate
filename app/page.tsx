@@ -109,6 +109,9 @@ export default function Home() {
         }
       })
       .otherwise(() => {})
+
+    // This is a purposeful onChange hook
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPhase])
 
   const isPoiForbidden =

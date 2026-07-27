@@ -39,6 +39,7 @@ export const AudioPlayerContextProvider = ({ children }: PropsWithChildren) => {
   return (
     <context.Provider value={audioRef}>
       {children}
+      {/* oxlint-disable-next-line jsx-a11y/media-has-caption only for audio alerts */}
       <audio className="hidden" ref={audioRef} />
     </context.Provider>
   )

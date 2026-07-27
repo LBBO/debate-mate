@@ -1,7 +1,7 @@
+import { allRoutes } from './lib/routes'
 import withSerwistInit from '@serwist/next'
 import type { NextConfig } from 'next'
 import { spawnSync } from 'node:child_process'
-import { allRoutes } from './lib/routes'
 
 // For tauri config
 const isProd = process.env.NODE_ENV === 'production'
