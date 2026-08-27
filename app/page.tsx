@@ -19,6 +19,7 @@ import {
   WheelPickerWrapper,
 } from '@/components/wheel-picker/wheel-picker'
 import { useAudio } from '@/contexts/audioPlayerContext'
+import { useSettings, useUpdateSettings } from '@/contexts/settingsContext'
 import { usePersistentWakeLock } from '@/hooks/usePersistentWakeLock'
 import { usePoiTimer } from '@/hooks/usePoiTimer'
 import { P, match } from '@gabriel/ts-pattern'
@@ -27,6 +28,8 @@ import {
   MessageCircleOffIcon,
   MessageCircleQuestionMarkIcon,
   SquareIcon,
+  Volume2Icon,
+  VolumeXIcon,
 } from 'lucide-react'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
@@ -36,6 +39,8 @@ export default function Home() {
   usePersistentWakeLock()
 
   const { playAudio, activateAudio } = useAudio()
+  const settings = useSettings()
+  const updateSettings = useUpdateSettings()
 
   const [isSoftPaused, setIsSoftPaused] = useState(false)
   const {
@@ -251,7 +256,17 @@ export default function Home() {
         </div>
       </div>
       <div className="grid w-full grid-cols-[1fr_auto_1fr] content-end items-center">
-        <div />
+        <div>
+          <IconButton
+            icon={settings.muteAudio ? VolumeXIcon : Volume2Icon}
+            aria-label={settings.muteAudio ? 'Unmute audio' : 'Mute audio'}
+            animate={false}
+            size="lg"
+            color={settings.muteAudio ? [220, 38, 38] : [64, 64, 64]}
+            className="bg-neutral-200"
+            onClick={() => updateSettings({ muteAudio: !settings.muteAudio })}
+          />
+        </div>
         <div />
         <div className="flex flex-row-reverse">
           <SettingsButton />

@@ -153,4 +153,24 @@ describe('Home', () => {
 
     expect(screen.getByText('Deduct')).toBeInTheDocument()
   })
+
+  it('shows a mute indicator that toggles the mute setting', () => {
+    render(wrapper())
+
+    expect(
+      screen.getByRole('button', { name: 'Mute audio' }),
+    ).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mute audio' }))
+
+    expect(
+      screen.getByRole('button', { name: 'Unmute audio' }),
+    ).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Unmute audio' }))
+
+    expect(
+      screen.getByRole('button', { name: 'Mute audio' }),
+    ).toBeInTheDocument()
+  })
 })
