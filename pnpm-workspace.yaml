@@ -5,7 +5,7 @@ allowBuilds:
   sharp: false
   unrs-resolver: false
 
-minimumReleaseAge: 4320
+minimumReleaseAge: 10080
 
 trustPolicy: no-downgrade
 trustPolicyExclude:
