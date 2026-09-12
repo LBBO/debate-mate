@@ -33,83 +33,87 @@ checksum = "sha256:929552b8305effac843ba7b4270c437aefb702fc3fbd73fcd1bffd35d4ac2
 url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-win-x64.zip"
 
 [[tools.nono]]
-version = "0.74.0"
+version = "0.75.0"
 backend = "github:nolabs-ai/nono"
 
 [tools.nono."platforms.linux-arm64"]
-checksum = "sha256:c83191e303b6ba8c804d3e8649174558584f358d02601d046c14e476eb08119c"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.74.0/nono-v0.74.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/520878367"
+checksum = "sha256:c5d2142077ab09b03829cf5a03c214eab761e26a440b964858f58950db93cd00"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.75.0/nono-v0.75.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/539754555"
 provenance = "github-attestations"
 
 [tools.nono."platforms.linux-arm64-musl"]
-checksum = "sha256:c83191e303b6ba8c804d3e8649174558584f358d02601d046c14e476eb08119c"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.74.0/nono-v0.74.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/520878367"
+checksum = "sha256:c5d2142077ab09b03829cf5a03c214eab761e26a440b964858f58950db93cd00"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.75.0/nono-v0.75.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/539754555"
 provenance = "github-attestations"
 
 [tools.nono."platforms.linux-x64"]
-checksum = "sha256:b625399efd48490d6367a6159e5241263aa7ac2e464d21a6ec29d9ebfbfdd4b3"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.74.0/nono-v0.74.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/520878363"
+checksum = "sha256:2f883269824d85f96a75fb8788f6c31619e60d2c0865e93402d2f347461054fa"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.75.0/nono-v0.75.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/539754562"
 provenance = "github-attestations"
-provenance_verified = true
 
 [tools.nono."platforms.linux-x64-musl"]
-checksum = "sha256:c2c2e32366511dafba27bfc675a6d2c50240c8474a4b69e20237156d28f4ec5a"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.74.0/nono-v0.74.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/520878362"
+checksum = "sha256:a58a676badfae859081a7d03dc5227cfe69236d435232da20b4e610d551b60ed"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.75.0/nono-v0.75.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/539754553"
 provenance = "github-attestations"
 
 [tools.nono."platforms.macos-arm64"]
-checksum = "sha256:88e6f716f2bb334973105799b774e0fce6d6d69e005e1a58f12753c42acf0b9f"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.74.0/nono-v0.74.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/520878365"
+checksum = "sha256:7f33f113b193900600b54951c306137ad7e04346adebaa14283c752b7673c7d0"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.75.0/nono-v0.75.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/539754563"
 provenance = "github-attestations"
-provenance_verified = true
 
 [tools.nono."platforms.macos-x64"]
-checksum = "sha256:f1f9ae8615f0a60cdb2568429453d3d73207e70a12aed061bd8eae4ce9264e2e"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.74.0/nono-v0.74.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/520878369"
+checksum = "sha256:f460e92a820752a89be06eff67b888227e4dbaf99e05adbb36dd027ceb49823e"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.75.0/nono-v0.75.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/539754561"
 provenance = "github-attestations"
 
 [[tools.pnpm]]
-version = "12.2.1"
+version = "12.3.4"
 backend = "aqua:pnpm/pnpm"
 
 [tools.pnpm."platforms.linux-arm64"]
-checksum = "sha256:b42fe17d2a6a7035ae1762377ff5ecd530746bd5d49db6d77c74986db8efda48"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.2.1/pnpm-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/538723312"
+checksum = "sha256:95e71a2a30bbc0b77511f95cf096779068dcad6ffcbbfdf0cd4dde9de2b2b97c"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431953"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-arm64-musl"]
-checksum = "sha256:442180dd14c7e0f213533ae5d5e209e031089121b2ce75b66a4b8a1473e92b98"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.2.1/pnpm-linux-arm64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/538723313"
+checksum = "sha256:75c0b268cedbf9b57b69dcef576b9b307dd5b7650c1f967ac1b8f8d6afc1ca25"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-linux-arm64-musl.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431955"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:06a69a4f33447096fdc8bc071ad322a153ba1d8aebf9ccbd720cb082f7e497ed"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.2.1/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/538723306"
+checksum = "sha256:9705e5704b4679fb503c963a18d1ac4f105e39aafafca8a2ed346facdf820cd0"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431952"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl"]
-checksum = "sha256:fc5bac02292fe3416677a0dcbe8e1135cdcc9840148acde996e006d503f8ccd8"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.2.1/pnpm-linux-x64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/538723309"
+checksum = "sha256:e4c4f54599627cc0646fbb2ea8103bd6c88634533fbd6c6f5ca0f6fe7d6f5d9c"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-linux-x64-musl.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431957"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.macos-arm64"]
-checksum = "sha256:ba343408b8479857fde5c42b2285e78e068f0e18c35824cd0a551197c6d8b774"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.2.1/pnpm-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/538723310"
+checksum = "sha256:9560243d4e92780c4466bac2ee6aac4166c8bb601ad3c63f070cdd701b28f360"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431956"
+provenance = "github-attestations"
+
+[tools.pnpm."platforms.macos-x64"]
+checksum = "sha256:b1d4e02cd2f9a37c42dbb82d2f93e80675f417bd4d5f3be8b999a84db673040e"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-darwin-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431958"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.windows-x64"]
-checksum = "sha256:de76abf628ea248ab9e9c23430543a227b0e471e38c9618f178a4d87a84435b1"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.2.1/pnpm-win32-x64.zip"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/538723315"
+checksum = "sha256:ada0d8b62adff9884686d473e27d0f57ef2ca4a044d23a7c6782af86b9a8a6cf"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.3.4/pnpm-win32-x64.zip"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/544431954"
 provenance = "github-attestations"
