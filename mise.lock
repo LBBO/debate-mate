@@ -33,43 +33,43 @@ checksum = "sha256:929552b8305effac843ba7b4270c437aefb702fc3fbd73fcd1bffd35d4ac2
 url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-win-x64.zip"
 
 [[tools.nono]]
-version = "0.76.0"
+version = "0.77.0"
 backend = "github:nolabs-ai/nono"
 
 [tools.nono."platforms.linux-arm64"]
-checksum = "sha256:5bed9ab9d34ce177e3930b3c01d76560fa539ae803c83d912b56a0edf876f16f"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.76.0/nono-v0.76.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/552520887"
+checksum = "sha256:7f523123be72d825635bbe63cb8b672318b974fc3ca841cd30c696f1d540c168"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.77.0/nono-v0.77.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/557854625"
 provenance = "github-attestations"
 
 [tools.nono."platforms.linux-arm64-musl"]
-checksum = "sha256:5bed9ab9d34ce177e3930b3c01d76560fa539ae803c83d912b56a0edf876f16f"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.76.0/nono-v0.76.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/552520887"
+checksum = "sha256:7f523123be72d825635bbe63cb8b672318b974fc3ca841cd30c696f1d540c168"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.77.0/nono-v0.77.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/557854625"
 provenance = "github-attestations"
 
 [tools.nono."platforms.linux-x64"]
-checksum = "sha256:5cb6bbd4c22840dc6d05e3c46c8e22891cc125f5bf6d5748bf6c6bfcda5ef0be"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.76.0/nono-v0.76.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/552520886"
+checksum = "sha256:86bcf7a134d6f47e064ad0f2561f1be02b9fffc643708c3ec2dd4070e82b798e"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.77.0/nono-v0.77.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/557854626"
 provenance = "github-attestations"
 
 [tools.nono."platforms.linux-x64-musl"]
-checksum = "sha256:5a57c4b78c16146dc1dea192bd1b94a1636087ed5221023ecea1808e3967f6be"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.76.0/nono-v0.76.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/552520885"
+checksum = "sha256:824cdc9a50101e277c014c967bbbb6ca8be86597e957bc6d7eaaafda3474b80a"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.77.0/nono-v0.77.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/557854624"
 provenance = "github-attestations"
 
 [tools.nono."platforms.macos-arm64"]
-checksum = "sha256:985547be0bb6949a13b92c11965e3d9940d4d3c2c0d9adaf4f9f10f521c6a9dc"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.76.0/nono-v0.76.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/552520884"
+checksum = "sha256:1b413e61758f5e212f1c683b95c3aadb3799a01dbd54685dd7eae33782de7f12"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.77.0/nono-v0.77.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/557854618"
 provenance = "github-attestations"
 
 [tools.nono."platforms.macos-x64"]
-checksum = "sha256:18147c17a649961298be7e5eafaa9b8f570a4a209f976f69f58ad06e433dae5a"
-url = "https://github.com/nolabs-ai/nono/releases/download/v0.76.0/nono-v0.76.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/552520891"
+checksum = "sha256:b69ac49b9f29187958f02fac2580dfb38bf0ce149bc5385a4f1afe765be309b6"
+url = "https://github.com/nolabs-ai/nono/releases/download/v0.77.0/nono-v0.77.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/nolabs-ai/nono/releases/assets/557854622"
 provenance = "github-attestations"
 
 [[tools.pnpm]]
