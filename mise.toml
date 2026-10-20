@@ -6,8 +6,8 @@ minimum_release_age = "7d"
 
 [tools]
 node = "25.9.0"
-nono = "v0.79.0"
-pnpm = "12.12.1"
+nono = "v0.80.0"
+pnpm = "12.13.0"
 
 [env]
 JAVA_HOME = "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
