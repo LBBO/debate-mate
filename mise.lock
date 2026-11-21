@@ -35,6 +35,7 @@ url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-win-x64.zip"
 [[tools.nono]]
 version = "0.81.0"
 backend = "github:nolabs-ai/nono"
+unsupported_platforms = ["windows-x64"]
 
 [tools.nono."platforms.linux-arm64"]
 checksum = "sha256:a4d87ddb0917ef96224bcc41a2587318d7d0e92441e7ff454696e5980c9f7924"
