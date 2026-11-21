@@ -6,7 +6,7 @@ minimum_release_age = "7d"
 
 [tools]
 node = "25.9.0"
-nono = "v0.81.0"
+nono = "v0.82.0"
 pnpm = "12.21.0"
 
 [env]
